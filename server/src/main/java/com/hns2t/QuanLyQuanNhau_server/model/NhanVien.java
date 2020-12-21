@@ -24,10 +24,14 @@ public class NhanVien {
 	private long nv_id;
 	private String nv_hoten;
 	@Column(unique = true)
-	private String nv_cmnd;
+	
+	private String nv_chungminhnhandan;
+	@Column(name = "ngaysinh")
 	private Date nv_ngaysinh;
+	@Column(name = "diachi")
 	private String nv_diachi;
-	private String nv_sdt;
+	@Column(name = "sodienthoai")
+	private String nv_sodienthoai;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "nv_lnvid")
