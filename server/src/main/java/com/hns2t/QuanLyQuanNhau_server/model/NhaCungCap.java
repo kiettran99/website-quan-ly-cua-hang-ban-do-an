@@ -15,7 +15,7 @@ public class NhaCungCap {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ncc_id; 
-	private String ncc_name;
+	private String ncc_ten;
 	private String ncc_sdt;
 	private String ncc_email;
 	private Double ncc_tongmua;
