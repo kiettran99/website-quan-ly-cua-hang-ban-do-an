@@ -3,6 +3,7 @@ package com.hns2t.QuanLyQuanNhau_server.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,8 +19,14 @@ public class HoaDon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long hd_id;
+	
+	@Column(name = "ngaythanhtoan")
 	private Date hd_ngaythanhtoan;
+	
+	@Column(name = "tongtien")
 	private Double hd_tongtien;
+	
+	@Column(name = "trangthai")
 	private StatusHoaDon hd_trangthai;
 	
 	@ManyToOne

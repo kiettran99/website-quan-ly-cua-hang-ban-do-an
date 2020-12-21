@@ -1,5 +1,6 @@
 package com.hns2t.QuanLyQuanNhau_server.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ public class ChiTietNguyeLieu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ctnl_id; 
+	
+	@Column(name = "mota")
 	private String ctnl_mota;
 	public ChiTietNguyeLieu() {
 		super();

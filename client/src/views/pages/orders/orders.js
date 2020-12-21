@@ -39,7 +39,6 @@ import {
 } from "@coreui/react";
 import "./orders.css";
 import TableData from "./tableData";
-import { shallow } from "enzyme/build";
 
 export default (props) => {
   const settings = {
@@ -56,7 +55,23 @@ export default (props) => {
   };
 
   const onClickMenuHandler = (id, name, price) => {
-    setBill((el) => el.concat([{ id, name, price, amount: 1 }]));
+    const isExistsMenu = !!bill.find(element => element.id === id);
+    // Check if exists
+    if (isExistsMenu) {
+      setBill(bill.map(element => {
+        if (element.id === id) {
+          return {
+            ...element,
+            amount: element.amount + 1
+          }
+        }
+        return element
+      }));
+    }
+    else {
+      // add new foods
+      setBill((el) => el.concat([{ id, name, price, amount: 1, table }]));
+    }
   };
   console.log(bill);
   return (
@@ -109,8 +124,9 @@ export default (props) => {
                           {TableData.slice(0, 24).map((el, key) => (
                             <CCol lg="2" className="pt-5 " key={key}>
                               <div
-                                className={`table `}
+                                className={`table ${el.ban_stt === table ? "bg-primary text-light" : ""}`}
                                 id={key}
+                                style={{ cursor: 'pointer' }}
                                 onClick={(e) => onClickTableHandler(e, el)}
                               >
                                 <CImg
@@ -266,17 +282,17 @@ export default (props) => {
                                 );
                               })
                             ) : (
-                              <div className="icon">
-                                <Icon
-                                  path={mdiFoodOff}
-                                  title="User Profile"
-                                  size={10}
-                                  horizontal
-                                  rotate={180}
-                                  vertical
-                                />
-                              </div>
-                            )}
+                                <div className="icon">
+                                  <Icon
+                                    path={mdiFoodOff}
+                                    title="User Profile"
+                                    size={10}
+                                    horizontal
+                                    rotate={180}
+                                    vertical
+                                  />
+                                </div>
+                              )}
                           </CCardBody>
                           <CCardFooter>
                             <CRow className="d-flex justify-content-between">

@@ -3,6 +3,7 @@ package com.hns2t.QuanLyQuanNhau_server.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,11 +23,23 @@ public class MonAn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ma_id; 
+	
+	@Column(name = "ten")
 	private String ma_ten;
+	
+	@Column(name = "giavon")
 	private Double ma_giavon;
+	
+	@Column(name = "giaban")
 	private Double ma_giaban;
+	
+	@Column(name = "donvitinh")
 	private String ma_donvitinh;
+	
+	@Column(name ="hinhanh")
 	private Byte ma_hinhanh;
+	
+	@Column(name = "motachitiet")
 	private String ma_motachitiet;
 	
 	@ManyToOne
