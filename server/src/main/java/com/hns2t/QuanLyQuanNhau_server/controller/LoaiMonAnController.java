@@ -24,7 +24,7 @@ import com.hns2t.QuanLyQuanNhau_server.model.MonAn;
 import com.hns2t.QuanLyQuanNhau_server.service.LoaiMonAnService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/")
 public class LoaiMonAnController {
 //	@Autowired
