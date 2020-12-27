@@ -10,7 +10,7 @@ import {
   CCol,
   CImg,
 } from "@coreui/react";
-import { createOneMonAn} from '../api/MonAnApi';
+import { createOneMonAn } from '../api/MonAnApi';
 import alertify from "alertifyjs";
 
 const CreateFood = (props) => {
@@ -23,17 +23,28 @@ const CreateFood = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      dvt, giaban, giavon, motachitiet, ten, hinhanh
-    }
+    // const data = {
+    //   dvt, giaban, giavon, motachitiet, ten, hinhanh
+    // }
+
+    const formData = new FormData();
+
+    formData.append('ma_ten', ten);
+    formData.append('ma_giavon', giavon);
+    formData.append('ma_giaban', giaban);
+    formData.append('ma_donvitinh', dvt);
+    formData.append('ma_motachitiet', motachitiet);
+    formData.append('image', hinhanh);
+
     try {
-      await createOneMonAn(data);
+      await createOneMonAn(formData);
       props.toggleModal();
       props.createSuccess();
       alertify.success("Thêm món ăn thành công");
     } catch (err) {
       alertify.error("Lỗi nghen");
-    }  }
+    }
+  }
 
   return (
     <div className='create-food'>
@@ -42,8 +53,7 @@ const CreateFood = (props) => {
           <h3>Thêm mới món sản phẩm</h3>
         </CModalHeader>
         <form onSubmit={onSubmit}>
-          <CModalBody>
-            <CContainer className="create-food-content">
+          <CModalBody className="create-food-content">
               <CRow className="field">
                 <CCol lg="10">
                   <CRow>
@@ -54,7 +64,7 @@ const CreateFood = (props) => {
                       <input
                         type="text"
                         placeholder="Nhập tên thức ăn"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setTen(e.target.value);
                         }}
@@ -75,7 +85,7 @@ const CreateFood = (props) => {
                       <input
                         type="text"
                         placeholder="Nhập giá vốn"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setGiaVon(e.target.value);
                         }}
@@ -96,7 +106,7 @@ const CreateFood = (props) => {
                       <input
                         type="text"
                         placeholder="Nhập giá bán"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setGiaBan(e.target.value);
                         }}
@@ -117,7 +127,7 @@ const CreateFood = (props) => {
                       <input
                         type="text"
                         placeholder="Nhập đơn vị tính"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setDvt(e.target.value);
                         }}
@@ -138,7 +148,7 @@ const CreateFood = (props) => {
                       <input
                         type="text"
                         placeholder="Mô tả chi tiết món ăn"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setMoTaChiTiet(e.target.value);
                         }}
@@ -150,10 +160,20 @@ const CreateFood = (props) => {
               </CRow>
               <CRow className="field">
                 <CCol className="pt-3">
-                  <img src={'food-1.jpg'} className="c-avatar-img" alt="chicken nướng lu" />
+                  <input type="file" onChange={(e) => {
+                    e.preventDefault();
+
+                    const image = e.target.files[0];
+
+                    setHinhAnh(image);
+                  }} />
                 </CCol>
               </CRow>
-            </CContainer>
+              <CRow className="field">
+                <CCol className="pt-3">
+                  {hinhanh && <img className="c-avatar-img" src={URL.createObjectURL(hinhanh)} alt="avatar-pic" />}
+                </CCol>
+              </CRow>
           </CModalBody>
           <CModalFooter>
             <CButton color="primary" type="submit">

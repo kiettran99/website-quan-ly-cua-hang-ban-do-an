@@ -29,7 +29,7 @@ import com.hns2t.QuanLyQuanNhau_server.payload.MonAnRequest;
 import com.hns2t.QuanLyQuanNhau_server.utils.FileUploadUtils;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1/")
 public class MonAnController {
 	@Autowired
@@ -42,9 +42,6 @@ public class MonAnController {
 
 	@PostMapping(value = "/monans",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public MonAn createMonAn(@ModelAttribute MonAnRequest monAnRequest) throws IOException {
-		
-		System.out.println(monAnRequest.getMa_ten());
-
 		MonAn monAn = new MonAn();
 		monAn.setMa_ten(monAnRequest.getMa_ten());
 		monAn.setMa_giaban(monAnRequest.getMa_giaban());
@@ -59,7 +56,7 @@ public class MonAnController {
 
 			MonAn savedMonAn = repo.save(monAn);
 
-			String uploadDir = "/mon-an/" + savedMonAn.getMa_id();
+			String uploadDir = "assets/mon-an/" + savedMonAn.getMa_id();
 
 			FileUploadUtils.saveFile(uploadDir, fileName, monAnRequest.getImage());
 
