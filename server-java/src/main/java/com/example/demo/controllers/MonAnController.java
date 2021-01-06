@@ -1,4 +1,4 @@
-package com.hns2t.QuanLyQuanNhau_server.controller;
+package com.example.demo.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hns2t.QuanLyQuanNhau_server.dao.MonAnRepository;
-import com.hns2t.QuanLyQuanNhau_server.exception.ResourceNotFoundException;
-import com.hns2t.QuanLyQuanNhau_server.model.MonAn;
-import com.hns2t.QuanLyQuanNhau_server.payload.MonAnRequest;
-import com.hns2t.QuanLyQuanNhau_server.utils.FileUploadUtils;
+import com.example.demo.entities.MonAn;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.payload.MonAnRequest;
+import com.example.demo.repositories.MonAnRepository;
+import com.example.demo.utils.FileUploadUtils;
 
 @RestController
 @RequestMapping("/api/v1/monans")
@@ -34,12 +34,12 @@ public class MonAnController {
 	@Autowired
 	private MonAnRepository repo;
 
-	@GetMapping("/")
+	@GetMapping("")
 	public List<MonAn> getAll() {
 		return repo.findAll();
 	}
 
-	@PostMapping(value = "/",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public MonAn createMonAn(@ModelAttribute MonAnRequest monAnRequest) throws IOException {
 		MonAn monAn = new MonAn();
 		monAn.setMa_ten(monAnRequest.getMa_ten());

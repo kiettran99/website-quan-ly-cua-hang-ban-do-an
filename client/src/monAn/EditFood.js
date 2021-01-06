@@ -34,6 +34,7 @@ const EditFood = (props) => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        
         const data = {
             ma_donvitinh: dvt,
             ma_giaban: giaban,

@@ -15,7 +15,7 @@ import Icon from "@mdi/react";
 import { mdiFoodForkDrink } from "@mdi/js";
 import CreateFood from "./createFood";
 import EditFood from "./EditFood";
-import { getMonAns } from '../api/MonAnApi'
+import { getMonAns, removeMonAn } from '../api/MonAnApi'
 
 const fields = [
   { key: "ma_id", label: "STT", _style: { width: "10%" } },
@@ -202,7 +202,13 @@ function MonAn() {
                       <CIcon name="cil-pencil" alt="Edit" />
                       {/* &nbsp;Edit */}
                     </CLink>
-                    <CLink className="c-subheader-nav-link" href="#">
+                    <CLink className="c-subheader-nav-link" onClick={() => {
+                        const result = window.confirm("Xác nhận xóa sản phẩm !");
+
+                        if (result) {
+                          removeMonAn(item.ma_id);
+                        }
+                    }}>
                       <CIcon
                         style={{ color: "red" }}
                         name="cil-trash"
