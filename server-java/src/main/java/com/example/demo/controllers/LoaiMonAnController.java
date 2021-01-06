@@ -1,4 +1,4 @@
-package com.hns2t.QuanLyQuanNhau_server.controller;
+package com.example.demo.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hns2t.QuanLyQuanNhau_server.dao.LoaiMonAnRepository;
-import com.hns2t.QuanLyQuanNhau_server.exception.ResourceNotFoundException;
-import com.hns2t.QuanLyQuanNhau_server.model.LoaiMonAn;
-import com.hns2t.QuanLyQuanNhau_server.model.MonAn;
-import com.hns2t.QuanLyQuanNhau_server.service.LoaiMonAnService;
+import com.example.demo.entities.LoaiMonAn;
+import com.example.demo.entities.MonAn;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repositories.LoaiMonAnRepository;
 
 @RestController
 @RequestMapping("/api/v1/loaimonans")
@@ -31,12 +30,12 @@ public class LoaiMonAnController {
 	@Autowired
 	private LoaiMonAnRepository repo;
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public List<LoaiMonAn> getAll(){
 		return repo.findAll();
 	}
 	
-	@PostMapping("/")
+	@PostMapping("")
 	public LoaiMonAn createLoaiMonAn(@RequestBody LoaiMonAn loaiMonAn) {
 		return repo.save(loaiMonAn);
 	}
