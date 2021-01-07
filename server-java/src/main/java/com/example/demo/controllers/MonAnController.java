@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.entities.LoaiMonAn;
 import com.example.demo.entities.MonAn;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.payload.MonAnRequest;
+import com.example.demo.repositories.LoaiMonAnRepository;
 import com.example.demo.repositories.MonAnRepository;
 import com.example.demo.utils.FileUploadUtils;
 
@@ -34,6 +36,9 @@ public class MonAnController {
 	@Autowired
 	private MonAnRepository repo;
 
+	@Autowired
+	private LoaiMonAnRepository loaiMonAnRepository;
+
 	@GetMapping("")
 	public List<MonAn> getAll() {
 		return repo.findAll();
@@ -41,12 +46,22 @@ public class MonAnController {
 
 	@PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public MonAn createMonAn(@ModelAttribute MonAnRequest monAnRequest) throws IOException {
+
+		Long loaiMonAnId = monAnRequest.getLma_id();
+		LoaiMonAn loaiMonAn = null;
+
+		if (loaiMonAnId != null) {
+			loaiMonAn = loaiMonAnRepository.findById(loaiMonAnId)
+					.orElseThrow(() -> new ResourceNotFoundException("Hoa Don khong ton tai with: " + loaiMonAnId));
+		}
+
 		MonAn monAn = new MonAn();
 		monAn.setMa_ten(monAnRequest.getMa_ten());
 		monAn.setMa_giaban(monAnRequest.getMa_giaban());
 		monAn.setMa_donvitinh(monAnRequest.getMa_donvitinh());
 		monAn.setMa_giavon(monAnRequest.getMa_giavon());
 		monAn.setMa_motachitiet(monAnRequest.getMa_motachitiet());
+		monAn.setLoaiMonAn(loaiMonAn);
 
 		if (monAnRequest.getImage() != null) {
 			String fileName = StringUtils.cleanPath(monAnRequest.getImage().getOriginalFilename());

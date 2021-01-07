@@ -46,10 +46,6 @@ public class HoaDonService {
 	@Autowired
 	private MonAnRepository monAnRepository;
 
-	public void getBan(ChiTietHoaDonRequest cthdRequest) {
-		System.out.println(cthdRequest.getBan_stt());
-	}
-
 	public void checkout(ChiTietHoaDonRequest cthdRequest) {
 
 		Ban object = banRepository.findBySTT(cthdRequest.getBan_stt());
