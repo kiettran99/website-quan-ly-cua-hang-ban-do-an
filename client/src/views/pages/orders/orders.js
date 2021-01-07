@@ -39,6 +39,7 @@ import {
 } from "@coreui/react";
 import "./orders.css";
 import TableData from "./tableData";
+import { checkoutOrder } from '../../../api/ordersApi';
 
 export default (props) => {
   const settings = {
@@ -121,8 +122,29 @@ export default (props) => {
     }, 0);
   };
 
-  const onCheckOutHandler = () => {
-    alert("Click");
+  const checkOutTable = (bill, table) => {
+    return bill.filter(element => element.table === table);
+  }
+
+  const onCheckOutHandler = async () => {
+    const tableCheckout = checkOutTable(bill, table);
+    const total = computingTotalOrder(bill, table);
+
+    const data = {
+      orderdetail: tableCheckout.map(element => ({
+        cthd_gia: element.price,
+        cthd_soluong: element.amount,
+        monAn: element.id
+      })),
+      ban_stt: table,
+      total
+    };
+
+    console.log(data);
+
+    await checkoutOrder(data);
+
+    setBill((el) => el.filter(element => element.table !== table));
   }
 
   return (
