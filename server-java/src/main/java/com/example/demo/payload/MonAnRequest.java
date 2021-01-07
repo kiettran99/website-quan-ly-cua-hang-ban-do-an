@@ -4,6 +4,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class MonAnRequest {
 
+	private String ma_ten;
+
+	private Double ma_giavon;
+
+	private Double ma_giaban;
+
+	private String ma_donvitinh;
+
+	private MultipartFile image;
+
+	private String ma_motachitiet;
+
+	private Long lma_id;
+
 	public String getMa_ten() {
 		return ma_ten;
 	}
@@ -51,16 +65,12 @@ public class MonAnRequest {
 	public void setMa_motachitiet(String ma_motachitiet) {
 		this.ma_motachitiet = ma_motachitiet;
 	}
-	
-	private String ma_ten;
-	
-	private Double ma_giavon;
-	
-	private Double ma_giaban;
-	
-	private String ma_donvitinh;
-	
-	private MultipartFile image;
 
-	private String ma_motachitiet;
+	public Long getLma_id() {
+		return lma_id;
+	}
+
+	public void setLma_id(Long lma_id) {
+		this.lma_id = lma_id;
+	}
 }

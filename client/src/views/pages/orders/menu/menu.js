@@ -35,7 +35,6 @@ import {
   CDropdownMenu,
 } from "@coreui/react";
 import "./menu.css";
-import { classNames } from "classnames";
 
 export default ({ onClickMenuHandler }) => {
   const settings = {
