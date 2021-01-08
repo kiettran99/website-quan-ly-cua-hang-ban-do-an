@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { useState, lazy } from 'react'
 import {
   CBadge,
   CButton,
@@ -16,11 +16,17 @@ import CIcon from '@coreui/icons-react'
 
 //import MainChartExample from '../charts/MainChartExample.js'
 import ChartBarRevenue from '../charts/ChartBarRevenue';
+import ChartLineTotal from '../charts/ChartLineTotal';
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
+
+
+  const viewByDate = ['Day', 'Month', 'Year'];
+  const [typeDate, setTypeDate] = useState('Month');
+
   return (
     <>
       <WidgetsDropdown />
@@ -28,21 +34,22 @@ const Dashboard = () => {
         <CCardBody>
           <CRow>
             <CCol sm="5">
-              <h4 id="traffic" className="card-title mb-0">Traffic</h4>
-              <div className="small text-muted">November 2017</div>
+              <h4 id="traffic" className="card-title mb-0">Thống kê</h4>
+              <div className="small text-muted">Số lượng đơn đặt hàng</div>
             </CCol>
             <CCol sm="7" className="d-none d-md-block">
               <CButton color="primary" className="float-right">
-                <CIcon name="cil-cloud-download"/>
+                <CIcon name="cil-cloud-download" />
               </CButton>
               <CButtonGroup className="float-right mr-3">
                 {
-                  ['Day', 'Month', 'Year'].map(value => (
+                  viewByDate.map(value => (
                     <CButton
                       color="outline-secondary"
                       key={value}
                       className="mx-0"
-                      active={value === 'Month'}
+                      active={value === typeDate}
+                      onClick={() => setTypeDate(value)}
                     >
                       {value}
                     </CButton>
@@ -51,7 +58,10 @@ const Dashboard = () => {
               </CButtonGroup>
             </CCol>
           </CRow>
-          <ChartBarRevenue style={{height: '300px', marginTop: '40px'}}/>
+          <ChartBarRevenue style={{ height: '300px', marginTop: '40px' }}
+            typeDate={typeDate} />
+          <ChartLineTotal style={{ height: '300px', marginTop: '40px' }}
+            typeDate={typeDate} />
         </CCardBody>
         <CCardFooter>
           <CRow className="text-center">
@@ -108,7 +118,7 @@ const Dashboard = () => {
         </CCardFooter>
       </CCard>
 
-      <WidgetsBrand withCharts/>
+      <WidgetsBrand withCharts />
 
       <CRow>
         <CCol>
@@ -153,7 +163,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Tuesday
+                        Tuesday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -164,7 +174,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Wednesday
+                        Wednesday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -175,7 +185,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Thursday
+                        Thursday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -186,7 +196,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Friday
+                        Friday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -197,7 +207,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Saturday
+                        Saturday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -208,7 +218,7 @@ const Dashboard = () => {
                   <div className="progress-group mb-4">
                     <div className="progress-group-prepend">
                       <span className="progress-group-text">
-                      Sunday
+                        Sunday
                       </span>
                     </div>
                     <div className="progress-group-bars">
@@ -502,7 +512,7 @@ const Dashboard = () => {
                       <CProgress className="progress-xs" color="info" value="22" />
                     </td>
                     <td className="text-center">
-                      <CIcon height={25} name="cib-google-pay"/>
+                      <CIcon height={25} name="cib-google-pay" />
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
