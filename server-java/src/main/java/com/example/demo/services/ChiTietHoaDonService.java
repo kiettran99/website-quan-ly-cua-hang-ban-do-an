@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -24,6 +26,19 @@ public class ChiTietHoaDonService {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+
+	public List<ChiTietHoaDon> getChiTietHoaDonTheoHD(Long idHoaDon) {
+		Session session = sessionFactory.getCurrentSession();
+
+		String queryString = " Form ChiTietHoaDon cthd join cthd.hoaDon Where cthd.hoaDon.hd_id=:id";
+
+		Query<ChiTietHoaDon> query = session.createQuery(queryString, ChiTietHoaDon.class);
+
+		query.setParameter("id", idHoaDon);
+		List<ChiTietHoaDon> cthd = query.getResultList();
+
+		return cthd;
+	}
 
 	public ChiTietHoaDon getChiTietHoaDonTheoBan(Long idBan) {
 		Session session = sessionFactory.getCurrentSession();

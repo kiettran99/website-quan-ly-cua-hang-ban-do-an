@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "cthd")
 public class ChiTietHoaDon {
@@ -24,10 +26,12 @@ public class ChiTietHoaDon {
 
 	@ManyToOne
 	@JoinColumn(name = "cthd_hdid")
+	@JsonBackReference
 	private HoaDon hoaDon;
 
 	@ManyToOne
 	@JoinColumn(name = "cthd_monanid")
+	@JsonBackReference
 	private MonAn monAn;
 
 	public ChiTietHoaDon() {

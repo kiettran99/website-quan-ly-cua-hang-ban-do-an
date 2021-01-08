@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.entities.Ban;
 import com.example.demo.entities.ChiTietHoaDon;
@@ -45,6 +46,14 @@ public class HoaDonService {
 
 	@Autowired
 	private MonAnRepository monAnRepository;
+	
+	public List<HoaDon> getOrders() {
+		return repo.findAll();
+	}
+	
+	public HoaDon getOrderById(Long id) {
+		return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hoa Don khong ton tai with: " + id));
+	}
 
 	public void checkout(ChiTietHoaDonRequest cthdRequest) {
 
