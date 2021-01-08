@@ -10,5 +10,5 @@ public class QuanLyQuanNhauServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(QuanLyQuanNhauServerApplication.class, args);
 	}
-
+	
 }
