@@ -12,17 +12,14 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import Icon from "@mdi/react";
-import { getOrders} from '../api/OrderApi'
+import { getOrders } from '../api/OrderApi'
+import dayjs from 'dayjs';
 
 const fields = [
-  { key: "ma_id", label: "STT", _style: { width: "10%" } },
+  { key: "hd_id", label: "STT", _style: { width: "10%" } },
   { key: "hd_ngaythanhtoan", label: "Ngày", _style: { width: "15%" } },
   { key: "hd_tongtien", label: "Tổng tiền", _style: { width: "20%" } },
-  { key: "hd_trangthai", label: "Trạng thái", _style: { width: "20%" } },
-  { key: "b_trangthai", label: "Trạng thái bàn", _style: { width: "20%" } },
-    { key: "cthd_gia", label: "Giá bán", _style: { width: "20%" } },
-  { key: "cthd_soluong", label: "Số Lượng", _style: { width: "20%" } },
-
+  { key: "b_stt", label: "Số bàn", _style: { width: "20%" } },
   //{ key: "action", label: "ACTION", _style: { width: "10%" } },
 ];
 const getBadge = (status) => {
@@ -53,8 +50,13 @@ function Order() {
     const fetchData = async () => {
       try {
         const response = await getOrders();
-        setOrders(response);
+        setOrders(response.map(element => ({
+          ...element,
+          'hd_ngaythanhtoan': dayjs(element.hd_ngaythanhtoan).format('DD/MM/YYYY'),
+          ...element.ban
+        })));
         setLoading(false);
+        console.log(response)
       } catch (err) {
         setOrders(null);
         setLoading(true);
@@ -102,9 +104,9 @@ function Order() {
         <CCardHeader className="CCardHeader-title">
           <CContainer>
             <CRow className="d-flex justify-content-between">
-              <h1>Danh sách </h1>
+              <h1>Danh sách Hóa Đơn</h1>
               <div className="card-header-actions">
-                
+
               </div>
             </CRow>
           </CContainer>
