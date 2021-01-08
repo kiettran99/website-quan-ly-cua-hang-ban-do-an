@@ -51,6 +51,12 @@ export default [
     icon: "cil-chart-pie",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Order",
+    to: "/order",
+    icon: "cil-chart-pie",
+  },
+  {
     _tag: "CSidebarNavDropdown",
     name: "Giao Dịch",
     route: "/giaodich",
