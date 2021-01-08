@@ -15,10 +15,6 @@
 	<name>QuanLyQuanNhau</name>
 	<description>Quán Lý Quán Ăn</description>
 
-	<properties>
-		<java.version>15</java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
