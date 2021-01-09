@@ -15,6 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "ban")
 public class Ban {
@@ -80,9 +84,12 @@ public class Ban {
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "nhanvien_ban", joinColumns = @JoinColumn(name = "b_id", referencedColumnName = "b_id"), inverseJoinColumns = @JoinColumn(name = "nv_id", referencedColumnName = "nv_id"))
+	@JsonManagedReference
+	@JsonIgnore
 	private List<NhanVien> nhanviens;
 
 	@OneToMany(mappedBy = "ban")
+	@JsonBackReference
 	private List<HoaDon> hoadons;
 
 	public Ban() {

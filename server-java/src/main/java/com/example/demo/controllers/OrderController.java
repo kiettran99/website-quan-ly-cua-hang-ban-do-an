@@ -23,10 +23,15 @@ import com.example.demo.services.HoaDonService;
 public class OrderController {
 	@Autowired
 	HoaDonService service;
+	
+	@GetMapping("")
+	public List<HoaDon> getOrders() {
+		return service.getOrders();
+	}
 
 	@GetMapping("/{id}")
 	public HoaDon getOrderById(@PathVariable Long id) {
-		return service.repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hoa Don khong ton tai with: " + id));
+		return service.getOrderById(id);
 	}
 
 	@PostMapping("/checkout")

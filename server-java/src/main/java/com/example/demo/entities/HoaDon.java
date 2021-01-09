@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "hoadon")
 public class HoaDon {
@@ -102,10 +106,13 @@ public class HoaDon {
 	private NhanVien hd_nhanvien;
 	
 	@ManyToOne
+	@JsonManagedReference
+	@JsonIgnore
 	@JoinColumn(name="hd_banid")
 	private Ban ban;
 	
 	@OneToMany(mappedBy = "hoaDon")
+	@JsonManagedReference
 	private List<ChiTietHoaDon> chiTietHoaDons;
 	
 	public HoaDon() {
