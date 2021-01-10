@@ -25,7 +25,7 @@ const EditLoaiMonAn = (props) => {
         e.preventDefault();
         
         const data = {
-            ma_ten: ten
+            lma_ten: ten
         }
 
         // const formData = new FormData();
@@ -38,7 +38,7 @@ const EditLoaiMonAn = (props) => {
         // formData.append('image', hinhanh);
 
         try {
-            await EditLoaiMonAn(selectLoaiMonAn.lma_id, data);
+            await editLoaiMonAn(selectLoaiMonAn.lma_id, data);
             toggleEditModal();
             createSuccess();
             alertify.success("Thêm món ăn thành công");
