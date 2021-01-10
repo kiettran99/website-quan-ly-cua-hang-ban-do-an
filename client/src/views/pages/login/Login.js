@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -16,7 +16,38 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
+import { useHistory } from 'react-router-dom';
+import { login } from '../../../api/nguoiDungApi';
+
 const Login = () => {
+
+  const history = useHistory();
+
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const onLoginHandler = (e) => {
+    e.preventDefault();
+
+    console.log(usernameRef.current);
+
+    const username = usernameRef.current.value || '';
+    const password = passwordRef.current.value || '';
+
+    login(username, password).then(res => {
+      if (res.roles) {
+        if (res.roles.find(role => role.role === 'admin')) {
+          return history.push("/dashboard");
+        }
+        else {
+          return history.push("/orders");
+        }
+      }
+      alert("username hoặc mật khẩu không đúng");
+    });
+  }
+
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -25,7 +56,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={onLoginHandler}>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     <CInputGroup className="mb-3">
@@ -34,7 +65,7 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Username" autoComplete="username" />
+                      <input className="form-control" type="text" placeholder="Username" autoComplete="username" ref={usernameRef} />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -42,11 +73,11 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" />
+                      <input className="form-control" type="password" placeholder="Password" autoComplete="current-password" ref={passwordRef} />
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton color="primary" className="px-4">Login</CButton>
+                        <CButton color="primary" className="px-4" type="submit">Login</CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
                         <CButton color="link" className="px-0">Forgot password?</CButton>

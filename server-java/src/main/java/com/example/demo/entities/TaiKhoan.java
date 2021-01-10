@@ -16,7 +16,7 @@ public class TaiKhoan {
 	private long tk_id;
 	private String tk_user;
 	private Double tk_password;
-	private PhanQuyen tk_phanquyen;
+	//private PhanQuyen tk_phanquyen;
 	
 	@OneToOne(mappedBy = "taiKhoan")
 	private NhanVien tk_nhanVien;
