@@ -40,6 +40,8 @@ import {
 import "./orders.css";
 import TableData from "./tableData";
 import { checkoutOrder } from '../../../api/ordersApi';
+import useOrderAccount from './useOrderAccount';
+import { useHistory } from 'react-router-dom';
 
 export default (props) => {
   const settings = {
@@ -53,6 +55,9 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [table, setTable] = useState(1);
   const [bill, setBill] = useState([]);
+
+  const account = useOrderAccount();
+  const history = useHistory();
 
   useEffect(() => {
     setTableData(TableData);
@@ -393,7 +398,17 @@ export default (props) => {
                                   rotate={180}
                                   vertical
                                 />
-                                User
+                                {account ? (
+                                  <>
+                                    <p className="d-inline">{account.username}</p>
+                                    <button className="btn btn-link text-danger pt-0"
+                                      onClick={() => {
+                                        localStorage.removeItem('user');
+                                        history.push("/login");
+                                      }}
+                                    >&nbsp;Log out</button>
+                                  </>
+                                ) : 'User'}
                               </p>
                               <p className="mt-3">
                                 <Icon

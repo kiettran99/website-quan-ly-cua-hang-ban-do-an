@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -26,10 +26,22 @@ const Login = () => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
+  useEffect(() => {
+    if (localStorage.user) {
+      const user = JSON.parse(localStorage.user) || null;
+      if (user.roles) {
+        if (user.roles.find(role => role.role === 'admin')) {
+          history.push("/dashboard");
+        }
+        else {
+          history.push("/orders");
+        }
+      }
+    }
+  }, []);
+
   const onLoginHandler = (e) => {
     e.preventDefault();
-
-    console.log(usernameRef.current);
 
     const username = usernameRef.current.value || '';
     const password = passwordRef.current.value || '';
@@ -37,9 +49,11 @@ const Login = () => {
     login(username, password).then(res => {
       if (res.roles) {
         if (res.roles.find(role => role.role === 'admin')) {
+          localStorage.setItem('user', JSON.stringify(res));
           return history.push("/dashboard");
         }
         else {
+          localStorage.setItem('user', JSON.stringify(res));
           return history.push("/orders");
         }
       }

@@ -57,7 +57,12 @@ class App extends Component {
             <Route
               path="/"
               name="Home"
-              render={(props) => <TheLayout {...props} />}
+              render={(props) => {
+                if (localStorage.user) {
+                  return <TheLayout {...props} />;
+                }
+                return <Login {...props} />;
+              }}
             />
           </Switch>
         </React.Suspense>
