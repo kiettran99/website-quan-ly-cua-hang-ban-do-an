@@ -198,7 +198,7 @@ const EditFood = (props) => {
                     </CModalBody>
                     <CModalFooter>
                         <CButton color="primary" type="submit">
-                            Thêm mới
+                            Cập nhật
             </CButton>
                         <CButton color="secondary" onClick={props.toggleModal}>
                             Bỏ qua
