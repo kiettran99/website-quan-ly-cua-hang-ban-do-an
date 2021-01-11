@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,9 +24,17 @@ public class NguyenLieu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long nl_id; 
+	
+	@Column(name = "ten")
 	private String nl_ten;
+	
+	@Column(name ="donvitinh")
 	private String nl_donvitinh;
+	
+	@Column(name = "hansudung")
 	private Date nl_hansudung;
+	
+	@Column(name = "tonkho")
 	private Integer nl_tonkho;
 	
 	@ManyToMany(mappedBy = "nguyenLieus")

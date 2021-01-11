@@ -21,9 +21,13 @@ public class Ban {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long b_id;
-	@Column(unique = true)
+	@Column(unique = true, name = "sothutu")
 	private Long b_stt;
+	
+	@Column(name = "soghe")
 	private Integer b_soghe;
+	
+	@Column(name = "trangthai")
 	private TrangThaiBan b_trangthai;
 	
 	@ManyToMany(cascade = CascadeType.ALL)

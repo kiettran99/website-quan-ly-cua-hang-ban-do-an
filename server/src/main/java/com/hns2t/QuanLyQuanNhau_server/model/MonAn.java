@@ -3,6 +3,7 @@ package com.hns2t.QuanLyQuanNhau_server.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,11 +23,23 @@ public class MonAn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ma_id; 
+	
+	@Column(name = "ten")
 	private String ma_ten;
+	
+	@Column(name = "giavon")
 	private Double ma_giavon;
+	
+	@Column(name = "giaban")
 	private Double ma_giaban;
+	
+	@Column(name = "donvitinh")
 	private String ma_donvitinh;
-	private Byte ma_hinhanh;
+	
+	@Column(name ="hinhanh")
+	private String ma_hinhanh;
+
+	@Column(name = "motachitiet")
 	private String ma_motachitiet;
 	
 	@ManyToOne
@@ -49,8 +62,7 @@ public class MonAn {
 		super();
 	}
 
-	
-	public MonAn(Long ma_id, String ma_ten, Double ma_giavon, Double ma_giaban, String ma_donvitinh, Byte ma_hinhanh,
+	public MonAn(Long ma_id, String ma_ten, Double ma_giavon, Double ma_giaban, String ma_donvitinh, String ma_hinhanh,
 			String ma_motachitiet, LoaiMonAn loaiMonAn, List<ChiTietHoaDon> chiTietHoaDons,
 			List<NguyenLieu> nguyenLieus) {
 		super();
@@ -107,14 +119,6 @@ public class MonAn {
 		this.ma_donvitinh = ma_donvitinh;
 	}
 
-	public Byte getMa_hinhanh() {
-		return ma_hinhanh;
-	}
-
-	public void setMa_hinhanh(Byte ma_hinhanh) {
-		this.ma_hinhanh = ma_hinhanh;
-	}
-
 	public String getMa_motachitiet() {
 		return ma_motachitiet;
 	}
@@ -147,7 +151,11 @@ public class MonAn {
 		this.nguyenLieus = nguyenLieus;
 	}
 	
-	
-	
-	
+	public String getMa_hinhanh() {
+		return ma_hinhanh;
+	}
+
+	public void setMa_hinhanh(String ma_hinhanh) {
+		this.ma_hinhanh = ma_hinhanh;
+	}
 }

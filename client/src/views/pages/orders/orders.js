@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import Icon from "@mdi/react";
 import Menu from "./menu/menu";
@@ -39,7 +39,9 @@ import {
 } from "@coreui/react";
 import "./orders.css";
 import TableData from "./tableData";
-import { shallow } from "enzyme/build";
+import { checkoutOrder } from '../../../api/ordersApi';
+import useOrderAccount from './useOrderAccount';
+import { useHistory } from 'react-router-dom';
 
 export default (props) => {
   const settings = {
@@ -49,16 +51,107 @@ export default (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  const [table, setTable] = useState(0);
+
+  const [tableData, setTableData] = useState([]);
+  const [table, setTable] = useState(1);
   const [bill, setBill] = useState([]);
+
+  const account = useOrderAccount();
+  const history = useHistory();
+
+  useEffect(() => {
+    setTableData(TableData);
+  }, []);
+
+  useEffect(() => {
+
+    const tables = bill.map(b => b.table);
+
+    setTableData((tableData) => tableData.map((tab) => {
+      if (tables.includes(tab.ban_stt)) {
+        return {
+          ...tab,
+          ban_trangthai: 'ordering'
+        }
+      }
+      return {
+        ...tab,
+        ban_trangthai: ''
+      }
+    }));
+
+    // Store in local Storage
+
+
+  }, [bill]);
+
   const onClickTableHandler = (e, el) => {
     setTable(el.ban_stt);
   };
 
   const onClickMenuHandler = (id, name, price) => {
-    setBill((el) => el.concat([{ id, name, price, amount: 1 }]));
+    const isExistsMenu = !!bill.find(element => element.id === id && element.table === table);
+    // Check if exists
+    if (isExistsMenu) {
+      setBill(bill.map(element => {
+        if (element.id === id && element.table === table) {
+          return {
+            ...element,
+            amount: element.amount + 1
+          }
+        }
+        return element
+      }));
+    }
+    else {
+      // add new foods
+      setBill((el) => el.concat([{ id, name, price, amount: 1, table }]));
+    }
+    setTableData((tableData) => tableData.map((tab) => {
+      if (tab.ban_stt === table) {
+        return {
+          ...tab,
+          ban_trangthai: 'ordering'
+        }
+      }
+      return tab;
+    }))
   };
-  console.log(bill);
+
+  const computingTotalOrder = (bill, table) => {
+    return bill.reduce((total, currentBill) => {
+      if (currentBill.table === table) {
+        return total + (currentBill.amount * currentBill.price);
+      }
+      return total;
+    }, 0);
+  };
+
+  const checkOutTable = (bill, table) => {
+    return bill.filter(element => element.table === table);
+  }
+
+  const onCheckOutHandler = async () => {
+    const tableCheckout = checkOutTable(bill, table);
+    const total = computingTotalOrder(bill, table);
+
+    const data = {
+      orderdetail: tableCheckout.map(element => ({
+        cthd_gia: element.price,
+        cthd_soluong: element.amount,
+        monAn: element.id
+      })),
+      ban_stt: table,
+      total
+    };
+
+    console.log(data);
+
+    await checkoutOrder(data);
+
+    setBill((el) => el.filter(element => element.table !== table));
+  }
+
   return (
     <div>
       <CContainer fluid style={{ height: "100vh", backgroundColor: "#fff" }}>
@@ -106,11 +199,12 @@ export default (props) => {
                     >
                       <div>
                         <CRow style={{ height: "100%" }}>
-                          {TableData.slice(0, 24).map((el, key) => (
+                          {tableData.slice(0, 24).map((el, key) => (
                             <CCol lg="2" className="pt-5 " key={key}>
                               <div
-                                className={`table `}
+                                className={`table ${el.ban_stt === table.toString() ? "bg-info text-light" : ""}`}
                                 id={key}
+                                style={{ cursor: 'pointer' }}
                                 onClick={(e) => onClickTableHandler(e, el)}
                               >
                                 <CImg
@@ -121,7 +215,9 @@ export default (props) => {
                                   className="label"
                                   align="center"
                                 />
-                                <div className="label">Bàn {el.ban_stt}</div>
+                                <div className="label">
+                                  Bàn {el.ban_stt} {el.ban_trangthai === 'ordering' ? ` . (Đ)` : ''}
+                                </div>
                               </div>
                             </CCol>
                           ))}
@@ -129,7 +225,7 @@ export default (props) => {
                       </div>
                       <div>
                         <CRow style={{ height: "100%" }}>
-                          {TableData.slice(24).map((el, key) => (
+                          {tableData.slice(24).map((el, key) => (
                             <CCol lg="2" className="pt-5" key={key}>
                               <div className="table">
                                 <CImg
@@ -195,7 +291,7 @@ export default (props) => {
                             {bill.length > 0 ? (
                               bill.map((el, key) => {
                                 const id = el.id;
-                                return (
+                                return el.table === table && (
                                   <CRow
                                     className="border-bottom py-2"
                                     style={{ boxShadow: "0px 1px 1px #007fc1" }}
@@ -211,12 +307,12 @@ export default (props) => {
                                         vertical
                                         onClick={(e) => {
                                           const billUpdated = bill.filter(
-                                            (el) => el.id !== id
+                                            (el) => el.id !== id || el.table !== table
                                           );
                                           setBill([...billUpdated]);
                                         }}
                                       />
-                                      <p>&nbsp;{key + 1}&nbsp;</p>
+                                      <p>&nbsp;{id}&nbsp;</p>
                                       <p>{el.name}</p>
                                     </CCol>
                                     <CCol
@@ -231,11 +327,20 @@ export default (props) => {
                                         rotate={180}
                                         vertical
                                         onClick={(e) => {
-                                          setBill((el) =>
-                                            produce(el, (v) => {
-                                              v[key].amount =
-                                                el[key].amount - 1;
-                                            })
+                                          setBill((state) =>
+                                            // produce(el, (v) => {
+                                            //   v[key].amount =
+                                            //     el[key].amount - 1;
+                                            // })
+                                            state.reduce((filtered, bill, currentIndex) => {
+                                              if (bill.amount > 1) {
+                                                filtered.push({
+                                                  ...bill,
+                                                  amount: currentIndex === key ? bill.amount - 1 : bill.amount
+                                                });
+                                              }
+                                              return filtered;
+                                            }, [])
                                           );
                                         }}
                                       />
@@ -259,29 +364,29 @@ export default (props) => {
                                       <p>{el.price}</p>
                                       <p>
                                         {" "}
-                                        <strong>{el.price}</strong>{" "}
+                                        <strong>{el.price * el.amount}</strong>{" "}
                                       </p>
                                     </CCol>
                                   </CRow>
                                 );
                               })
                             ) : (
-                              <div className="icon">
-                                <Icon
-                                  path={mdiFoodOff}
-                                  title="User Profile"
-                                  size={10}
-                                  horizontal
-                                  rotate={180}
-                                  vertical
-                                />
-                              </div>
-                            )}
+                                <div className="icon">
+                                  <Icon
+                                    path={mdiFoodOff}
+                                    title="User Profile"
+                                    size={10}
+                                    horizontal
+                                    rotate={180}
+                                    vertical
+                                  />
+                                </div>
+                              )}
                           </CCardBody>
                           <CCardFooter>
                             <CRow className="d-flex justify-content-between">
                               <p>Số lượng khách </p>
-                              <p>Tổng tiền 375.000</p>
+                              <p>Tổng tiền {computingTotalOrder(bill, table)}</p>
                             </CRow>
                             <CRow className="d-flex justify-content-between">
                               <p className="mt-3">
@@ -293,7 +398,17 @@ export default (props) => {
                                   rotate={180}
                                   vertical
                                 />
-                                Nguyễn Tuấn Hùng
+                                {account ? (
+                                  <>
+                                    <p className="d-inline">{account.username}</p>
+                                    <button className="btn btn-link text-danger pt-0"
+                                      onClick={() => {
+                                        localStorage.removeItem('user');
+                                        history.push("/login");
+                                      }}
+                                    >&nbsp;Log out</button>
+                                  </>
+                                ) : 'User'}
                               </p>
                               <p className="mt-3">
                                 <Icon
@@ -326,7 +441,9 @@ export default (props) => {
                               </CButton>
                             </CRow>
                             <CRow>
-                              <CCol className="text-center bg-success py-3">
+                              <CCol className="text-center bg-success py-3 btn"
+                                onClick={() => onCheckOutHandler()}
+                              >
                                 <h4 className="text-light">
                                   <Icon
                                     path={mdiCurrencyUsd}

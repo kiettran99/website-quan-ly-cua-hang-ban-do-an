@@ -3,6 +3,7 @@ package com.hns2t.QuanLyQuanNhau_server.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,15 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 @Entity
 @Table(name = "loaimonan")
 public class LoaiMonAn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long lma_id; 
+	private Long lma_id;
+	
+	@Column(name = "ten")
 	private String lma_ten;
 	
 	@OneToMany(mappedBy = "loaiMonAn", fetch = FetchType.EAGER)

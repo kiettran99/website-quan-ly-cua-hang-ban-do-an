@@ -66,7 +66,7 @@ function CreateLoaiMon(props) {
                       <input
                         type="text"
                         placeholder="Nhập tên loại món ăn"
-                        className="inp"
+                        className="form-control"
                         onChange={(e) => {
                           setLma_ten(e.target.value);
                         }}

@@ -3,6 +3,7 @@ package com.hns2t.QuanLyQuanNhau_server.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class PhieuXuat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long px_id; 
+	
+	@Column(name = "thoigian")
 	private Date px_thoigian;
 	
 	@ManyToMany(mappedBy = "phieuXuats")

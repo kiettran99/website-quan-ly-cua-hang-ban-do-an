@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hns2t.QuanLyQuanNhau_server.model.LoaiMonAn;
 
-
+@Repository
 public interface LoaiMonAnRepository extends JpaRepository<LoaiMonAn, Long> {
 
 }

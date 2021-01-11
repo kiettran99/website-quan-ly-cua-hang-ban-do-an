@@ -14,9 +14,12 @@ import CIcon from "@coreui/icons-react";
 import CreateLoaiMon from "./createLoaiMonAn";
 import Icon from "@mdi/react";
 import { mdiViewGridPlus } from "@mdi/js";
-import { getAllLoaiMonAn } from "../api/LoaiMonAnApi";
+import { getAllLoaiMonAn, removeLoaiMonAn } from "../api/LoaiMonAnApi";
 // import DestinationCreate from './createDestination'
 // import { getAllDestinations } from "../../api/destinationApi";
+import EditLoaiMonAn from './EditLoaiMonAn';
+
+
 const fields = [
   { key: "lma_id", label: "STT", _style: { width: "10%" } },
   { key: "lma_ten", label: "Tên", _style: { width: "80%" } },
@@ -45,6 +48,8 @@ function LoaiMonAn() {
   const [collapse, setCollapse] = useState(false);
   const [success, setSuccess] = useState(false);
   const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [selectLoaiMonAn, setSelectLoaiMonAn] = useState(0);
 
   const createSuccess = () => {
     setSuccess(!success);
@@ -67,6 +72,9 @@ function LoaiMonAn() {
  
   const toggleModal = () => {
     setModal(!modal);
+  };
+  const toggleEditModal = () => {
+    setEditModal(!editModal);
   };
   return (
     <>
@@ -110,7 +118,7 @@ function LoaiMonAn() {
                   <CBadge color={getBadge(item.lma_ten)}>{item.lma_ten}</CBadge>
                 </td>
               ),
-              action: () => (
+              action: (item) => (
                 <td style={{ display: "flex", justifyContent: "start" }}>
                   <div
                     style={{
@@ -119,11 +127,21 @@ function LoaiMonAn() {
                       justifyContent: "space-between",
                     }}
                   >
-                    <CLink className="c-subheader-nav-link" href="#">
+                    <CLink className="c-subheader-nav-link" onClick={() => {
+                      setSelectLoaiMonAn(item);
+                      console.log(item);
+                      toggleEditModal();            
+                    }}>
                       <CIcon name="cil-pencil" alt="Edit" />
                       {/* &nbsp;Edit */}
                     </CLink>
-                    <CLink className="c-subheader-nav-link" href="#">
+                    <CLink className="c-subheader-nav-link" onClick={() => {
+                        const result = window.confirm("Xác nhận xóa loại món ăn !");
+
+                        if (result) {
+                          removeLoaiMonAn(item.lma_id);
+                        }
+                    }}>
                       <CIcon 
                         style={{ color: "red" }}
                         name="cil-trash"
@@ -141,6 +159,12 @@ function LoaiMonAn() {
           modal={modal}
           toggleModal={toggleModal}
           createSuccess={createSuccess}
+        />
+         <EditLoaiMonAn
+          editModal={editModal}
+          toggleEditModal={toggleEditModal}
+          createSuccess={createSuccess}
+          selectLoaiMonAn={selectLoaiMonAn}
         />
       </CCard>
     </>

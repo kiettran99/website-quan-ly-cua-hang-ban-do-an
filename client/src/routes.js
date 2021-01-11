@@ -39,12 +39,14 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const Monan = React.lazy(() => import('./monAn/monan.js'));
+const Order = React.lazy(() => import('./orderMonAn/orderMonan'));
 const Ban = React.lazy(() => import('./ban/ban.js'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/monan', name: 'Món ăn', component: Monan },
+  { path: '/order', name: 'Order', component: Order },
   { path: '/loaimonan', name: 'Loại món ăn', component: LoaiMonAn },
 
   { path: '/ban', name: 'Bàn', component: Ban },

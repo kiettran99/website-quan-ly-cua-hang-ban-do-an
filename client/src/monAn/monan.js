@@ -14,7 +14,8 @@ import CIcon from "@coreui/icons-react";
 import Icon from "@mdi/react";
 import { mdiFoodForkDrink } from "@mdi/js";
 import CreateFood from "./createFood";
-import { getMonAns} from '../api/MonAnApi'
+import EditFood from "./EditFood";
+import { getMonAns, removeMonAn } from '../api/MonAnApi'
 
 const fields = [
   { key: "ma_id", label: "STT", _style: { width: "10%" } },
@@ -48,6 +49,9 @@ function MonAn() {
   const [success, setSuccess] = useState(false);
   const [modal, setModal] = useState(false);
 
+  const [editModal, setEditModal] = useState(false);
+  const [selectMonAn, setSelectMonAn] = useState(0);
+
   const createSuccess = () => {
     setSuccess(!success);
   };
@@ -69,6 +73,10 @@ function MonAn() {
 
   const toggleModal = () => {
     setModal(!modal);
+  };
+
+  const toggleEditModal = () => {
+    setEditModal(!editModal);
   };
   // const monanlist = [
   //   {
@@ -177,7 +185,7 @@ function MonAn() {
               //     </CBadge>
               //   </td>
               // ),
-              action: () => (
+              action: (item) => (
                 <td style={{ display: "flex", justifyContent: "start" }}>
                   <div
                     style={{
@@ -186,11 +194,21 @@ function MonAn() {
                       justifyContent: "space-between",
                     }}
                   >
-                    <CLink className="c-subheader-nav-link" href="#">
+                    <CLink className="c-subheader-nav-link" onClick={() => {
+                      setSelectMonAn(item);
+                      console.log(item);
+                      toggleEditModal();            
+                    }}>
                       <CIcon name="cil-pencil" alt="Edit" />
                       {/* &nbsp;Edit */}
                     </CLink>
-                    <CLink className="c-subheader-nav-link" href="#">
+                    <CLink className="c-subheader-nav-link" onClick={() => {
+                        const result = window.confirm("Xác nhận xóa sản phẩm !");
+
+                        if (result) {
+                          removeMonAn(item.ma_id);
+                        }
+                    }}>
                       <CIcon
                         style={{ color: "red" }}
                         name="cil-trash"
@@ -208,6 +226,12 @@ function MonAn() {
           modal={modal}
           toggleModal={toggleModal}
           createSuccess={createSuccess}
+        />
+        <EditFood
+          editModal={editModal}
+          toggleEditModal={toggleEditModal}
+          createSuccess={createSuccess}
+          selectMonAn={selectMonAn}
         />
       </CCard>
     </>
